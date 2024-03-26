@@ -2,10 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserPreference;
+
 class NewsFeedController extends Controller
 {
     public function index()
     {
+//        $userCategories = auth()->user()->userPreferences->getUserCategories();
+        $categorieIds = UserPreference::getUserCategories();
+        $categoryUrls = []; // TODO
+//        $news = ''; // TODO
+        
+        echo '<pre>';
+        print_r($categorieIds);
+        echo '<pre>';
+        
+        
+        
 //        $news = News::all(); // Пример, предполагайки, че имаш модел News и искаш да извлечеш всички новини
         
         $news = '<div id="Panes"><div>
