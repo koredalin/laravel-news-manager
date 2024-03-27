@@ -13,4 +13,16 @@ class Category extends Model
     public function providers() {
         return $this->belongsToMany(Provider::class)->using(CategoryProvider::class)->withTimestamps();
     }
+
+    public static function getNamesByCategoryIds(array $categoryIds)
+    {
+        $urls = self::whereIn('id', $categoryIds)->get(['id', 'name']);
+
+        $result = [];
+        foreach ($urls as $url) {
+            $result[$url->id] = $url->name;
+        }
+
+        return $result;
+    }
 }

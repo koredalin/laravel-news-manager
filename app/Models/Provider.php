@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Provider extends Model
 {
     use HasFactory;
-    
-    public function getNewsApiOrgKey(): string
-    {
-        return env('NEWS_API_ORG_KEY', '');
-    }
-    
-    public function getNewsDataIoKey(): string
-    {
-        return env('NEWS_DATA_IO_KEY', '');
-    }
+
+    public const API_NAMES = [
+        'NEWS_API_ORG',
+        'NEWS_DATA_IO',
+    ];
+
+    public const API_KEYS = [
+        self::API_NAMES[0] . '_KEY',
+        self::API_NAMES[1] . '_KEY',
+    ];
 
     // The relation to Category model, table.
     public function categories() {

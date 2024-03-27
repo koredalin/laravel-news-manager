@@ -15,8 +15,13 @@ class CategoryProvider extends Pivot
 
     public static function getLinksByCategoryIds(array $categoryIds)
     {
-        return self::whereIn('category_id', $categoryIds)
-            ->pluck('source_url')
-            ->toArray();
+        $urls = self::whereIn('category_id', $categoryIds)->get(['category_id', 'source_url']);
+
+        $result = [];
+        foreach ($urls as $url) {
+            $result[$url->category_id][] = $url->source_url;
+        }
+
+        return $result;
     }
 }

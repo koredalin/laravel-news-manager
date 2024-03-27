@@ -3,29 +3,27 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\Provider;
 
 class NewsLoaderService
 {
-    public const API_KEYS = [
-        'NEWS_API_ORG_KEY',
-        'NEWS_DATA_IO_KEY',
-    ];
-
+    public function __construct(
+        private NewsApiOrgService $newsApi,
+        private NewsDataIoService $newsData
+    ) {}
+    
     public function replaceApiKeys(array $categoryUrls): array
     {
         $resultUrls = [];
         foreach ($categoryUrls as $catUrl) {
-            foreach (self::API_KEYS as $apiKey) {
+            foreach (Provider::API_KEYS as $keyIndex => $apiKey) {
                 if (strpos($catUrl, $apiKey) !== false) {
-                    $resultUrls[] = str_replace($apiKey, config('secret.' . $apiKey), $catUrl);
+                    $resultUrls[Provider::API_NAMES[$keyIndex]][] =
+                        str_replace($apiKey, config('secret.' . $apiKey), $catUrl);
                 }
             }
         }
         
         return $resultUrls;
-    }
-
-    public function downloadContentByCategoryId(int $categoryId): string {
-        return DB::table('skills')->get();
     }
 }

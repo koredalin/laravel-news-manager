@@ -6,13 +6,13 @@ use App\Models\UserPreference;
 use App\Models\CategoryProvider;
 use App\Services\NewsLoaderService;
 
-class NewsFeedController extends Controller
+class NewsController extends Controller
 {
     public function __construct(
         protected NewsLoaderService $newsLoader
     ) {}
 
-    public function index()
+    public function index(int $id)
     {
 //        $userCategories = auth()->user()->userPreferences->getUserCategories();
         if (!auth()->check()) {
@@ -21,13 +21,13 @@ class NewsFeedController extends Controller
 
         $categoryIds = UserPreference::getUserCategories(auth()->id());
         $dbCategoryUrls = CategoryProvider::getLinksByCategoryIds($categoryIds);
-        $categoryUrls = $this->newsLoader->replaceApiKeys($dbCategoryUrls);
+//        $categoryUrls = $this->newsLoader->replaceApiKeys($dbCategoryUrls);
 //        $news = ''; // TODO
         
         echo '<pre>';
         print_r($categoryIds);
         print_r($dbCategoryUrls);
-        print_r($categoryUrls);
+//        print_r($categoryUrls);
         echo '<pre>';
         
         
@@ -48,6 +48,6 @@ class NewsFeedController extends Controller
 <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
 <form method="post" action="/feed/html"><table style="width:100%"><tbody><tr><td rowspan="2"><input type="text" name="amount" value="5" size="3" id="amount"></td><td rowspan="2"><table style="text-align:left"><tbody><tr><td style="width:20px"><input type="radio" name="what" value="paras" id="paras" checked="checked"></td><td><label for="paras">paragraphs</label></td></tr><tr><td style="width:20px"><input type="radio" name="what" value="words" id="words"></td><td><label for="words">words</label></td></tr><tr><td style="width:20px"><input type="radio" name="what" value="bytes" id="bytes"></td><td><label for="bytes">bytes</label></td></tr><tr><td style="width:20px"><input type="radio" name="what" value="lists" id="lists"></td><td><label for="lists">lists</label></td></tr></tbody></table></td><td style="width:20px"><input type="checkbox" name="start" id="start" value="yes" checked="checked"></td><td style="text-align:left"><label for="start">Start with \'Lorem<br>ipsum dolor sit amet...\'</label></td></tr><tr><td></td><td style="text-align:left"><input type="submit" name="generate" id="generate" value="Generate Lorem Ipsum"></td></tr></tbody></table></form></div><br></div>';
 
-        return view('dashboard', compact('news'));
+        return view('category', compact('news'));
     }
 }
