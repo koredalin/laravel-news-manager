@@ -2,6 +2,11 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use App\Models\Category;
+use App\Models\Provider;
+
 /**
  * Description of NewsDataIoService
  *
@@ -9,27 +14,40 @@ namespace App\Services;
  */
 class NewsDataIoService
 {
+    public const LANGUAGE = 'en';
+    public const ARTICLE = 'news';
+    public const API_PAGE_SIZE = 20;
 
-    public function downloadContentByCategoryUrlPage(string $categoryUrl, int $page = 1): array
+    public function downloadContentByCategoryUrlPage(Category $category, int $page = 1): ?\stdClass
     {
+        $result = null;
         try {
-            $apiResponse = Http::get($categoryUrl, [
-                'page' => $page
-            ]);
+            $providerName = Provider::NEWS_DATA_IO;
+            $provider = $category->providers->filter(function ($provider) use ($providerName) {
+                return $provider->name == $providerName;
+            })->first();
 
-            $result = [];
-            if ($apiResponse->successful()) {
-                $resultArr = $apiResponse->json();
-                if (is_array($resultArr)) {
-                    $result = $resultArr;
+            if ($provider) {
+                $apiKey = config('secret.' . Provider::NEWS_DATA_IO_KEY);
+                $apiBaseUrl = $provider->base_url . '/' . self::ARTICLE;
+                $apiResponse = Http::get($apiBaseUrl, [
+                    'apikey' => $apiKey,
+                    'category' => $category->name,
+                    'language' => self::LANGUAGE,
+                ]);
+
+                $result = [];
+                if ($apiResponse->successful()) {
+                    $resultArr = $apiResponse->json();
+                    if (is_array($resultArr) && !empty($resultArr)) {
+                        $result = json_decode(json_encode($resultArr));
+                    }
+                } else {
+                    Log::error("API request failed for category: {$category->name} with status code: " . $apiResponse->status());
                 }
-            } else {
-                // Записване на грешка в лог файл, без да се хвърля изключение
-                Log::error("API request failed for URL: {$categoryUrl} with status code: " . $apiResponse->status());
             }
         } catch (\Exception $e) {
-            // Улавяне на всякакви изключения и записването им в лог
-            Log::error("Exception caught during API request to {$categoryUrl}. " . $e->getMessage());
+            Log::error("Exception caught during API request to {$category->name}. " . $e->getMessage());
         }
         
         return $result;

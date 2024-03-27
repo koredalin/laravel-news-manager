@@ -16,14 +16,14 @@ class ProviderSeeder extends Seeder
     {
         DB::table('providers')->insert([
             [
-                'name' => 'News Api',
-                'base_url' => 'https://newsapi.org',
+                'name' => 'NEWS_API_ORG',
+                'base_url' => 'https://newsapi.org/v2',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'name' => 'NEWSDATA.IO',
-                'base_url' => 'https://newsdata.io',
+                'name' => 'NEWS_DATA_IO',
+                'base_url' => 'https://newsdata.io/api/1',
                 'created_at' => now(),
                 'updated_at' => now()
             ],

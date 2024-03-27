@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserPreference;
+use App\Models\Category;
 use App\Models\CategoryProvider;
 use App\Services\NewsLoaderService;
 
-class NewsController extends Controller
+class CategoryNewsController extends Controller
 {
     public function __construct(
         protected NewsLoaderService $newsLoader
@@ -18,16 +19,27 @@ class NewsController extends Controller
         if (!auth()->check()) {
             return Response::denyWithStatus(403);
         }
+        
+        $category = Category::with('providers')->findOrFail($id);
 
-        $categoryIds = UserPreference::getUserCategories(auth()->id());
-        $dbCategoryUrls = CategoryProvider::getLinksByCategoryIds($categoryIds);
+//        $dbCategoryUrls = CategoryProvider::getLinksByCategoryIds([$id]);
 //        $categoryUrls = $this->newsLoader->replaceApiKeys($dbCategoryUrls);
-//        $news = ''; // TODO
+        $categoryUrls = array (
+            'NEWS_API_ORG' => 
+            array (
+              'https://newsapi.org/v2/top-headlines?category=health',
+            ),
+            'NEWS_DATA_IO' => 
+            array (
+              'https://newsdata.io/api/1/news?apikey=pub_4076663c668d4f5c7e1fb051be345bfd84a0a&category=health',
+            ),
+          );
+        $news = $this->newsLoader->downloadCategoryNews($category);
         
         echo '<pre>';
-        print_r($categoryIds);
-        print_r($dbCategoryUrls);
-//        print_r($categoryUrls);
+//        print_r($dbCategoryUrls);
+        var_export($categoryUrls);
+        print_r($news);
         echo '<pre>';
         
         

@@ -2,6 +2,12 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use jcobhams\NewsApi\NewsApi;
+use App\Models\Category;
+use App\Models\Provider;
+
 /**
  * Description of NewsApiOrgService
  *
@@ -9,29 +15,28 @@ namespace App\Services;
  */
 class NewsApiOrgService
 {
+    public const ARTICLE = 'top-headlines';
     public const API_PAGE_SIZE = 10;
 
-    public function downloadContentByCategoryUrlPage(string $categoryUrl, int $page = 1): array
+    public function downloadContentByCategoryUrlPage(Category $category, int $page = 1): ?\stdClass
     {
+        $result = null;
         try {
-            $apiResponse = Http::get($categoryUrl, [
-                'pageSize' => self::API_PAGE_SIZE,
-                'page' => $page,
-            ]);
+            $providerName = Provider::NEWS_API_ORG;
+            $hasProvider = $category->providers->contains(function ($provider) use ($providerName) {
+                return $provider->name == $providerName;
+            });
 
-            $result = [];
-            if ($apiResponse->successful()) {
-                $resultArr = $apiResponse->json();
-                if (is_array($resultArr)) {
-                    $result = $resultArr;
-                }
-            } else {
-                // Записване на грешка в лог файл, без да се хвърля изключение
-                Log::error("API request failed for URL: {$categoryUrl} with status code: " . $apiResponse->status());
+            if ($hasProvider) {
+                $apiKey = config('secret.' . Provider::NEWS_API_ORG_KEY);
+
+                $newsapi = new NewsApi($apiKey);
+
+                # /v2/top-headlines
+                $result = $newsapi->getTopHeadlines(null, null, null, $category->name, self::API_PAGE_SIZE, $page);
             }
         } catch (\Exception $e) {
-            // Улавяне на всякакви изключения и записването им в лог
-            Log::error("Exception caught during API request to {$categoryUrl}. " . $e->getMessage());
+            Log::error("Exception caught during API request to ".Provider::NEWS_API_ORG.".category: {$category->name}. " . $e->getMessage());
         }
         
         return $result;

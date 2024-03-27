@@ -9,14 +9,21 @@ class Provider extends Model
 {
     use HasFactory;
 
+        
+    public const NEWS_API_ORG = 'NEWS_API_ORG';
+    public const NEWS_DATA_IO = 'NEWS_DATA_IO';
+    
+    public const NEWS_API_ORG_KEY = 'NEWS_API_ORG_KEY';
+    public const NEWS_DATA_IO_KEY = 'NEWS_DATA_IO_KEY';
+    
     public const API_NAMES = [
-        'NEWS_API_ORG',
-        'NEWS_DATA_IO',
+        self::NEWS_API_ORG,
+        self::NEWS_DATA_IO,
     ];
 
     public const API_KEYS = [
-        self::API_NAMES[0] . '_KEY',
-        self::API_NAMES[1] . '_KEY',
+        self::NEWS_API_ORG_KEY,
+        self::NEWS_DATA_IO_KEY,
     ];
 
     // The relation to Category model, table.
