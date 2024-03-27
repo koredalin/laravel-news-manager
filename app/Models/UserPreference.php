@@ -29,13 +29,9 @@ class UserPreference extends Model
 //        return $userPreferences->categories;
 //    }
 
-    public static function getUserCategories()
+    public static function getUserCategories(int $userId): array
     {
-        if (!auth()->check()) {
-            return [];
-        }
-
-        $userPreferences = self::where('user_id', auth()->id())->first();
+        $userPreferences = self::where('user_id', $userId)->first();
 
         if (!$userPreferences) {
             return [];

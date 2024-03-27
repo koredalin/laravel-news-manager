@@ -3,18 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserPreference;
+use App\Models\CategoryProvider;
+use App\Services\NewsLoaderService;
 
 class NewsFeedController extends Controller
 {
+    public function __construct(
+        protected NewsLoaderService $newsLoader
+    ) {}
+
     public function index()
     {
 //        $userCategories = auth()->user()->userPreferences->getUserCategories();
-        $categorieIds = UserPreference::getUserCategories();
-        $categoryUrls = []; // TODO
+        if (!auth()->check()) {
+            return Response::denyWithStatus(403);
+        }
+
+        $categoryIds = UserPreference::getUserCategories(auth()->id());
+        $dbCategoryUrls = CategoryProvider::getLinksByCategoryIds($categoryIds);
+        $categoryUrls = $this->newsLoader->replaceApiKeys($dbCategoryUrls);
 //        $news = ''; // TODO
         
         echo '<pre>';
-        print_r($categorieIds);
+        print_r($categoryIds);
+        print_r($dbCategoryUrls);
+        print_r($categoryUrls);
         echo '<pre>';
         
         

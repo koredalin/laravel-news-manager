@@ -12,4 +12,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class CategoryProvider extends Pivot
 {
     public $timestamps = true;
+
+    public static function getLinksByCategoryIds(array $categoryIds)
+    {
+        return self::whereIn('category_id', $categoryIds)
+            ->pluck('source_url')
+            ->toArray();
+    }
 }
