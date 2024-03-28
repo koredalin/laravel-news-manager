@@ -43,7 +43,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function userPreference() {
+    public function userPreferences() {
         return $this->hasOne(UserPreference::class, 'user_id', 'id');
     }
 }

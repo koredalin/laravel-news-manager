@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CategoryNewsController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +27,14 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/category/{id}', [CategoryNewsController::class, 'index'])
+Route::get('/category/{id}', [CategoryController::class, 'index'])
     ->middleware(['auth', 'verified'])->name('category');
+
+Route::get('/category/list', [CategoryController::class, 'list'])
+    ->middleware(['auth', 'verified'])->name('category.list');
+
+Route::post('/category/preferences', [CategoryController::class, 'updatePreferences'])
+    ->middleware(['auth', 'verified'])->name('category.updatePreferences');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

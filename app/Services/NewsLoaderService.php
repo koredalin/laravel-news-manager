@@ -36,10 +36,7 @@ class NewsLoaderService
         $result[Provider::NEWS_API_ORG] = $this->newsApi->downloadContentByCategoryUrlPage($category, $page);
 
         $result[Provider::NEWS_DATA_IO] = $this->newsData->downloadContentByCategoryUrlPage($category, $page);
-//        var_dump(__LINE__);
-//        print_r($result);
-//        exit;
-        
+
         return $result;
     }
 }

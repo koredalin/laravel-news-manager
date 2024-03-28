@@ -18,7 +18,7 @@ class NewsDataIoService
     public const ARTICLE = 'news';
     public const API_PAGE_SIZE = 20;
 
-    public function downloadContentByCategoryUrlPage(Category $category, int $page = 1): ?\stdClass
+    public function downloadContentByCategoryUrlPage(Category $category, ?int $page = null): ?\stdClass
     {
         $result = null;
         try {
@@ -34,9 +34,9 @@ class NewsDataIoService
                     'apikey' => $apiKey,
                     'category' => $category->name,
                     'language' => self::LANGUAGE,
+                    'page' => $page,
                 ]);
 
-                $result = [];
                 if ($apiResponse->successful()) {
                     $resultArr = $apiResponse->json();
                     if (is_array($resultArr) && !empty($resultArr)) {
@@ -49,7 +49,7 @@ class NewsDataIoService
         } catch (\Exception $e) {
             Log::error("Exception caught during API request to {$category->name}. " . $e->getMessage());
         }
-        
+
         return $result;
     }
 }

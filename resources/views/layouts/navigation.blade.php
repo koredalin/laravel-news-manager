@@ -11,9 +11,17 @@
                 </div>
 
                 <!-- Navigation Links -->
+                <!-- Dashboard Link -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
+                    </x-nav-link>
+                </div>
+                
+                <!-- New Categories List Link -->
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('category.list')" :active="request()->routeIs('dashboard')">
+                        {{ __('Categories List') }}
                     </x-nav-link>
                 </div>
             </div>
