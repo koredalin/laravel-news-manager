@@ -23,6 +23,17 @@
     margin-top: 20px;
 }
 
-.provider-link2 {
-    margin-left: 25px;
+.provider-link {
+    /*margin: 0 15px;*/
+    font-weight: bold;
+}
+
+h4 {
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.pagination-links {
+    margin-top: 30px;
+    color: #42d;
 }

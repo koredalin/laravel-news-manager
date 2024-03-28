@@ -42,7 +42,7 @@ class CategoryController extends Controller
 //        echo '<pre>';
         
 
-        return view('categories.index', compact('category', 'provider', 'newsData'));
+        return view('categories.index', compact('category', 'provider', 'newsData', 'pageNum'));
     }
 
     public function list()
