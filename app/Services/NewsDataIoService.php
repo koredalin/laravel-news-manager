@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Category;
 use App\Models\Provider;
 use stdClass;
+use App\Exceptions\DownloadNewsException;
 
 /**
  * Description of NewsDataIoService
@@ -44,10 +45,10 @@ class NewsDataIoService
                         $result = json_decode(json_encode($resultArr));
                     }
                 } else {
-                    Log::error("API request failed for category: {$category->name} with status code: " . $apiResponse->status());
+                    throw new DownloadNewsException("API request failed for category: {$category->name} with status code: " . $apiResponse->status());
                 }
             }
-        } catch (\Exception $e) {
+        } catch (DownloadNewsException $e) {
             Log::error("Exception caught during API request to {$category->name}. " . $e->getMessage());
         }
 
