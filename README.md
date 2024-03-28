@@ -65,6 +65,15 @@ This is a web-based News Manager application built using Laravel 10 Tailwind.css
 
 **_Note:_** Please, keep the sequence of the seeds.
 
+## PHPUnit tests
+
+1. Go to project directory in the console.
+1. Run the tests with:
+
+```
+    $ ./vendor/bin/phpunit tests/Unit
+```
+
 ## Contributors
 
 - Hristo Hristov

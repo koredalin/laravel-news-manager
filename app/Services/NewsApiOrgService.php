@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use jcobhams\NewsApi\NewsApi;
 use App\Models\Category;
 use App\Models\Provider;
 use stdClass;
@@ -23,22 +23,32 @@ class NewsApiOrgService
         $result = null;
         try {
             $providerName = Provider::NEWS_API_ORG;
-            $hasProvider = $category->providers->contains(function ($provider) use ($providerName) {
+            $provider = $category->providers->filter(function ($provider) use ($providerName) {
                 return $provider->name == $providerName;
-            });
+            })->first();
 
-            if ($hasProvider) {
+            if ($provider) {
                 $apiKey = config('secret.' . Provider::NEWS_API_ORG_KEY);
+                $apiBaseUrl = $provider->base_url . '/' . self::ARTICLE;
+                $apiResponse = Http::get($apiBaseUrl, [
+                    'apiKey' => $apiKey,
+                    'category' => $category->name,
+                    'page' => $page,
+                ]);
 
-                $newsapi = new NewsApi($apiKey);
-
-                # /v2/top-headlines
-                $result = $newsapi->getTopHeadlines(null, null, null, $category->name, self::API_PAGE_SIZE, $page);
+                if ($apiResponse->successful()) {
+                    $resultArr = $apiResponse->json();
+                    if (is_array($resultArr) && !empty($resultArr)) {
+                        $result = json_decode(json_encode($resultArr));
+                    }
+                } else {
+                    Log::error("API request failed for category: {$category->name} with status code: " . $apiResponse->status());
+                }
             }
         } catch (\Exception $e) {
-            Log::error("Exception caught during API request to ".Provider::NEWS_API_ORG.".category: {$category->name}. " . $e->getMessage());
+            Log::error("Exception caught during API request to {$category->name}. " . $e->getMessage());
         }
-        
+
         return $result;
     }
 }
