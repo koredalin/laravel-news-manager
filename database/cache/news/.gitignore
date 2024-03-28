@@ -1,0 +1,5 @@
+# We adding current directory to the git flow, but without its content.
+
+*
+
+!.gitignore

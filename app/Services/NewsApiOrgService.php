@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use jcobhams\NewsApi\NewsApi;
 use App\Models\Category;
 use App\Models\Provider;
+use stdClass;
 
 /**
  * Description of NewsApiOrgService
@@ -18,7 +18,7 @@ class NewsApiOrgService
     public const ARTICLE = 'top-headlines';
     public const API_PAGE_SIZE = 10;
 
-    public function downloadContentByCategoryUrlPage(Category $category, int $page = 1): ?\stdClass
+    public function downloadContentByCategoryUrlPage(Category $category, ?int $page = null): ?stdClass
     {
         $result = null;
         try {

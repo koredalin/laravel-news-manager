@@ -3,18 +3,21 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Latest News') }}
         </h2>
+        <div class="provider-links">
+            <a href="{{ route('category.index', ['id' => $category->id,]) }}" class="provider-link1">NEWS API ORG</a>
+            <a href="{{ route('category.index', ['id' => $category->id, 'provider' => 'news_data_io']) }}" class="provider-link2">NEWS DATA IO</a>
+        </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900">News from NEWS_API_ORG</h3>
-                    
-                    @if (!empty($newsData['NEWS_API_ORG']->articles))
-                        @forelse ($newsData['NEWS_API_ORG']->articles as $article)
+                @if ($provider !== 'NEWS_DATA_IO')
+                    <div class="p-6 bg-white border-b border-gray-200">
+
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">News from NEWS_API_ORG</h3>
+                        @forelse ($newsData->articles as $article)
                             <div class="mt-4">
-                                <!-- Показване на статиите както по-рано -->
                                 <div class="text-xl font-semibold">{{ $article->title }}</div>
                                 <div class="text-gray-600">Author: {{ $article->author ?? 'Unknown' }}</div>
                                 <div class="text-gray-600">Published at: {{ $article->publishedAt ?? 'Unknown' }}</div>
@@ -23,18 +26,15 @@
                         @empty
                             <p>No news available for NEWS_API_ORG.</p>
                         @endforelse
-                    @else
-                        <p>No news downloaded from NEWS_API_ORG.</p>
-                    @endif
                     
-                </div>
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900">News from NEWS_DATA_IO</h3>
-                    
-                    @if (!empty($newsData['NEWS_DATA_IO']->results))
-                        @forelse ($newsData['NEWS_DATA_IO']->results as $result)
+                    </div>
+                @endif
+                @if ($provider === 'NEWS_DATA_IO')
+                    <div class="p-6 bg-white border-b border-gray-200">
+
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">News from NEWS_DATA_IO</h3>
+                        @forelse ($newsData->results as $result)
                             <div class="mt-4 flex">
-                                <!-- Показване на статиите както по-рано -->
                                 @if ($result->image_url)
                                     <div class="mr-4 flex-shrink-0">
                                         <img src="{{ $result->image_url }}" alt="News image" style="width: 100px; height: auto;">
@@ -51,11 +51,9 @@
                         @empty
                             <p>No news available for NEWS_DATA_IO.</p>
                         @endforelse
-                    @else
-                        <p>No news downloaded from NEWS_DATA_IO.</p>
-                    @endif
                     
-                </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

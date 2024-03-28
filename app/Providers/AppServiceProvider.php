@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\NewsLoaderService;
 use App\Services\NewsApiOrgService;
 use App\Services\NewsDataIoService;
+use App\Services\NewsCacheService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(NewsLoaderService::class, function ($app) {
             return new NewsLoaderService(
                 new NewsApiOrgService(),
-                new NewsDataIoService()
+                new NewsDataIoService(),
+                new NewsCacheService()
             );
         });
 

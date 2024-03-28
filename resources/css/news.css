@@ -18,3 +18,11 @@
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
 }
+
+.provider-links {
+    margin-top: 20px;
+}
+
+.provider-link2 {
+    margin-left: 25px;
+}

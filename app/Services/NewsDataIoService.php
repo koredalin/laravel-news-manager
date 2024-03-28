@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\Category;
 use App\Models\Provider;
+use stdClass;
 
 /**
  * Description of NewsDataIoService
@@ -18,7 +19,7 @@ class NewsDataIoService
     public const ARTICLE = 'news';
     public const API_PAGE_SIZE = 20;
 
-    public function downloadContentByCategoryUrlPage(Category $category, ?int $page = null): ?\stdClass
+    public function downloadContentByCategoryUrlPage(Category $category, ?int $page = null): ?stdClass
     {
         $result = null;
         try {

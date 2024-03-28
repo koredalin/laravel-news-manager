@@ -2,15 +2,16 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use App\Models\Provider;
+use stdClass;
 
 class NewsLoaderService
 {
     public function __construct(
         private NewsApiOrgService $newsApi,
-        private NewsDataIoService $newsData
+        private NewsDataIoService $newsData,
+        private NewsCacheService $newsCache
     ) {}
     
     public function replaceApiKeys(array $categoryUrls): array
@@ -29,14 +30,30 @@ class NewsLoaderService
         
         return $resultUrls;
     }
-    
-    public function downloadCategoryNews(Category $category, int $page = 1): array
+
+    public function getNewsApiCategoryNews(Category $category, ?int $page = null): ?stdClass
     {
-        $result = [];
-        $result[Provider::NEWS_API_ORG] = $this->newsApi->downloadContentByCategoryUrlPage($category, $page);
+        $newsApiCache = $this->newsCache->unserialize(Provider::NEWS_API_ORG, $category->id, $page);
+        if (empty($newsApiCache)) {
+            $newsApiCache = $this->newsApi->downloadContentByCategoryUrlPage($category, $page);
+            if ($newsApiCache) {
+                $this->newsCache->serialize(Provider::NEWS_API_ORG, $category->id, $page, time(), $newsApiCache);
+            }
+        }
 
-        $result[Provider::NEWS_DATA_IO] = $this->newsData->downloadContentByCategoryUrlPage($category, $page);
+        return $newsApiCache;
+    }
 
-        return $result;
+    public function getNewsDataCategoryNews(Category $category, ?int $page = null): ?stdClass
+    {
+        $newsDataCache = $this->newsCache->unserialize(Provider::NEWS_DATA_IO, $category->id, $page);
+        if (empty($newsDataCache)) {
+            $newsDataCache = $this->newsData->downloadContentByCategoryUrlPage($category, $page);
+            if ($newsDataCache) {
+                $this->newsCache->serialize(Provider::NEWS_DATA_IO, $category->id, $page, time(), $newsDataCache);
+            }
+        }
+
+        return $newsDataCache;
     }
 }

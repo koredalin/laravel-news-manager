@@ -23,11 +23,5 @@ class CategoryProvider extends Pivot
         }
 
         return $result;
-        
-        
-//        return array(
-//            'https://newsapi.org/v2/top-headlines?category=health',
-//            'https://newsdata.io/api/1/sources?category=health'
-//        );
     }
 }
