@@ -16,7 +16,7 @@
                 @if ($provider !== 'NEWS_DATA_IO')
                     <div class="p-6 bg-white border-b border-gray-200">
 
-                        <h3 class="text-lg font-normal leading-6 text-gray-900">News from <strong>NEWS_API_ORG</strong></h3>
+                        <h3 class="text-lg font-normal leading-6 text-gray-900">News from <strong>NEWS API ORG</strong></h3>
                         <h4 class="text-base font-normal leading-6 text-gray-900">Category <strong>{{ strtoupper($category->name) }}</strong></h4>
                         
                         @forelse ($newsData->articles as $article)
@@ -27,7 +27,7 @@
                                 <a href="{{ $article->url }}" class="text-blue-500 hover:text-blue-700" target="_blank">Read more...</a>
                             </div>
                         @empty
-                            <p>No news available for NEWS_API_ORG.</p>
+                            <p>No news available for NEWS API ORG.</p>
                         @endforelse
                         
                         <div class="pagination-links">
@@ -42,7 +42,7 @@
                 @if ($provider === 'NEWS_DATA_IO')
                     <div class="p-6 bg-white border-b border-gray-200">
 
-                      <h3 class="text-lg font-normal leading-6 text-gray-900">News from <strong>NEWS_DATA_IO</strong></h3>
+                      <h3 class="text-lg font-normal leading-6 text-gray-900">News from <strong>NEWS DATA IO</strong></h3>
                         <h4 class="text-base font-normal leading-6 text-gray-900">Category <strong>{{ strtoupper($category->name) }}</strong></h4>
                         @forelse ($newsData->results as $result)
                             <div class="mt-4 flex">
@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                         @empty
-                            <p>No news available for NEWS_DATA_IO.</p>
+                            <p>No news available for NEWS DATA IO.</p>
                         @endforelse
                     
                         

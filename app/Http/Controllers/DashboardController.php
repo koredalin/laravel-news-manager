@@ -20,11 +20,6 @@ class DashboardController extends Controller
 
         $categoryIds = UserPreference::getUserCategories(auth()->id());
         $dbCategoryNames = Category::getNamesByCategoryIds($categoryIds);
-        
-//        echo '<pre>';
-//        print_r($categoryIds);
-//        print_r($dbCategoryNames);
-//        echo '<pre>';
 
         return view('dashboard', compact('dbCategoryNames'));
     }

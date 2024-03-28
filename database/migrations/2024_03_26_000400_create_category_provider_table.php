@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('category_provider', function (Blueprint $table) {
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('provider_id')->constrained('providers')->onDelete('cascade');
-            $table->string('source_url')->nullable();
             $table->timestamps();
             $table->primary(['category_id', 'provider_id']);
         });

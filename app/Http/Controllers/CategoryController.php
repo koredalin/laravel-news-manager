@@ -18,11 +18,12 @@ class CategoryController extends Controller
         if (!auth()->check()) {
             return Response::denyWithStatus(403);
         }
+
         $provider = strtoupper($request->get('provider', 'news_api_org'));
         if (!in_array($provider, Provider::API_NAMES, true)) {
             $provider = Provider::NEWS_API_ORG;
         }
-        
+
         $category = Category::with('providers')->findOrFail($id);
 
         $pageNum = (int) $request->get('page', 0);
@@ -35,12 +36,6 @@ class CategoryController extends Controller
         } else {
             $newsData = $this->newsLoader->getNewsApiCategoryNews($category, $pageNum);
         }
-        
-//        $newsData = config('secret.newsData');
-//        echo '<pre>';
-//        print_r($newsData);
-//        echo '<pre>';
-        
 
         return view('categories.index', compact('category', 'provider', 'newsData', 'pageNum'));
     }
@@ -70,7 +65,7 @@ class CategoryController extends Controller
 
         return redirect()->route('category.list')->with('success', 'Your preferences have been updated successfully.');
     }
-    
+
     private function getUserPreferencesValidatedData(Request $request): array
     {
         return $request->validate([
