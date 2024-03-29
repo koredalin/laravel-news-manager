@@ -12,7 +12,7 @@
                     <!--<div class="news-container" style="height: 500px; overflow: scroll; padding: 20px;">-->
                         @forelse ($dbCategoryNames as $catId => $catName)
                             <div class="news-article">
-                                <a href="/category/{{ $catId }}">{{ ucfirst($catName) }}</a>
+                                <a href="{{ route('category.index', ['id' => $catId,]) }}">{{ ucfirst($catName) }}</a>
                             </div>
                         @empty
                         <p>No categories chosen yet.</p>
