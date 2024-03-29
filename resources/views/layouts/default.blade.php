@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'News Manager')</title>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'News Manager') }}</title>
+
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
     <!-- Scripts -->
     @vite([
