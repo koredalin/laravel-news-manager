@@ -33,6 +33,7 @@ This is a web-based News Manager application built using Laravel 10 Tailwind.css
 ## Future Improvements
 
 - May be lazy loading on the frontend. There is no so much information at the moment. The app uses news pagination.
+- Setting up a separate database for Laravel tests.
 
 ## Local Server Installation
 
