@@ -10,7 +10,8 @@ class DashboardController extends Controller
 {
     public function __construct(
         protected NewsLoaderService $newsLoader
-    ) {}
+    ) {
+    }
 
     public function index()
     {

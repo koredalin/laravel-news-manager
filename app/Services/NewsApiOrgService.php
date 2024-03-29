@@ -43,7 +43,8 @@ class NewsApiOrgService
                         $result = json_decode(json_encode($resultArr));
                     }
                 } else {
-                    throw new DownloadNewsException("API request failed for category: {$category->name} with status code: " . $apiResponse->status());
+                    throw new DownloadNewsException("API request failed for category: "
+                        . "{$category->name} with status code: " . $apiResponse->status());
                 }
             }
         } catch (DownloadNewsException $e) {

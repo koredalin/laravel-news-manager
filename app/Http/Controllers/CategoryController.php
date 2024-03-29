@@ -11,7 +11,8 @@ class CategoryController extends Controller
 {
     public function __construct(
         protected NewsLoaderService $newsLoader
-    ) {}
+    ) {
+    }
 
     public function index(Request $request, int $id)
     {
@@ -24,6 +25,7 @@ class CategoryController extends Controller
             $provider = Provider::NEWS_API_ORG;
         }
 
+        // If there is no such a category - 404.
         $category = Category::with('providers')->findOrFail($id);
 
         $pageNum = (int) $request->get('page', 0);

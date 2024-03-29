@@ -1,24 +1,24 @@
 body {
-    background-color: #f8f9fa; /* Светлосив цвят за фона на страницата */
+    background-color: #f8f9fa;
 }
 
 .container {
     width: 80%;
-    margin: 0 auto; /* Центрира контейнера хоризонтално */
-    background-color: white; /* Бял фон на контейнера */
-    padding: 20px; /* Добавя вътрешен отстъп */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Добавя лека сянка за по-добър визуален ефект */
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .nav-links {
-    text-align: right; /* Позиционира линковете в дясно */
-    margin-bottom: 20px; /* Добавя малко пространство отдолу */
+    text-align: right;
+    margin-bottom: 20px;
 }
 
 .nav-links a {
-    text-decoration: none; /* Премахва подчертаването на линка */
-    color: #007bff; /* Задава цвят на линковете */
-    margin-left: 15px; /* Добавя пространство между линковете */
+    text-decoration: none;
+    color: #007bff;
+    margin-left: 15px;
 }
 
 .news-article {
@@ -46,7 +46,6 @@ body {
 }
 
 .provider-link {
-    /*margin: 0 15px;*/
     font-weight: bold;
 }
 
